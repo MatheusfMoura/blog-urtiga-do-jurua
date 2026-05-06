@@ -123,6 +123,7 @@ document.getElementById('form-patrocinador').addEventListener('submit', async (e
     const nomeValor = document.getElementById('patrocinador_nome').value;
     const linkValor = document.getElementById('patrocinador_link').value;
     const arquivoInput = document.getElementById('patrocinador_imagem');
+    const posicaoValor = document.getElementById('posicao-apoiador').value; // <-- Capturando o select
     const arquivoImagem = arquivoInput.files[0];
     let imagemUrlParaSalvar = null;
 
@@ -153,7 +154,8 @@ document.getElementById('form-patrocinador').addEventListener('submit', async (e
                 {
                     nome: nomeValor,
                     link_destino: linkValor,
-                    imagem_url: imagemUrlParaSalvar
+                    imagem_url: imagemUrlParaSalvar,
+                    posicao: posicaoValor // <-- Enviando para a nova coluna do Supabase
                 }
             ]);
 

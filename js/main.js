@@ -189,16 +189,53 @@ async function carregarPatrocinadores() {
 
         // Se tiver patrocinador cadastrado, desenha os banners
         if (data.length > 0) {
-            area.innerHTML = data.map(p => `
-                <div class="ad-panel" style="margin-bottom: 2.5rem; padding: 1rem; border-color: var(--accent-amber); box-shadow: 0 5px 15px rgba(0,0,0,0.4); text-align: center;">
-                    <span style="font-family: 'Courier Prime', monospace; font-size: 0.65rem; color: var(--text-secondary); letter-spacing: 2px; display: block; margin-bottom: 8px;">PUBLICIDADE</span>
-                    <a href="${p.link_destino}" target="_blank" rel="noopener noreferrer">
-                        <img src="${p.imagem_url}" alt="${p.nome}" style="width: 100%; border-radius: 4px; border: 1px solid #000; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-                    </a>
-                </div>
-            `).join('');
+            let htmlLateral = '';
+            let temBannerMaster = false;
+
+            data.forEach(p => {
+                if (p.posicao === 'topo') {
+                    // Preenche o Banner Master no topo
+                    document.getElementById('img-banner-master').src = p.imagem_url;
+                    document.getElementById('link-banner-master').href = p.link_destino;
+                    temBannerMaster = true;
+                } else {
+                    // Adiciona na lista da lateral mantendo o seu design original
+                    htmlLateral += `
+                        <div class="ad-panel" style="margin-bottom: 2.5rem; padding: 1rem; border-color: var(--accent-amber); box-shadow: 0 5px 15px rgba(0,0,0,0.4); text-align: center;">
+                            <span style="font-family: 'Courier Prime', monospace; font-size: 0.65rem; color: var(--text-secondary); letter-spacing: 2px; display: block; margin-bottom: 8px;">PUBLICIDADE</span>
+                            <a href="${p.link_destino}" target="_blank" rel="noopener noreferrer">
+                                <img src="${p.imagem_url}" alt="${p.nome}" style="width: 100%; border-radius: 4px; border: 1px solid #000; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                            </a>
+                        </div>
+                    `;
+                }
+            });
+
+            // Mostra ou esconde o container do topo dependendo se achou um banner "topo" no banco
+            const containerMaster = document.querySelector('.banner-master-container');
+            if (containerMaster) {
+                containerMaster.style.display = temBannerMaster ? 'block' : 'none';
+            }
+
+            // Exibe a lateral. Se só tiver banner no topo, a lateral mostra o espaço vazio padrão
+            if (htmlLateral !== '') {
+                area.innerHTML = htmlLateral;
+            } else {
+                area.innerHTML = `
+                    <div class="ad-panel" style="margin-top: 1.5rem; padding: 1.5rem;">
+                        <h3 class="ad-title" style="color: var(--text-secondary); font-size: 1rem;">Patrocínio Regional</h3>
+                        <div style="width: 100%; height: 250px; background-color: #171a17; border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; font-family: 'Courier Prime'; font-size: 0.7rem; color: #555; text-align: center;">
+                            Espaço para Banner<br>(300x250)<br><br>Anuncie Aqui
+                        </div>
+                    </div>
+                `;
+            }
+            
         } else {
-             // Se o banco estiver vazio, mostra a caixa padrão oferecendo o espaço
+             // Se o banco estiver totalmente vazio (nem topo, nem lateral)
+             const containerMaster = document.querySelector('.banner-master-container');
+             if (containerMaster) containerMaster.style.display = 'none';
+
              area.innerHTML = `
                 <div class="ad-panel" style="margin-top: 1.5rem; padding: 1.5rem;">
                     <h3 class="ad-title" style="color: var(--text-secondary); font-size: 1rem;">Patrocínio Regional</h3>
