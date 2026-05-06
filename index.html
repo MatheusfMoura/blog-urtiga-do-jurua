@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urtiga do Juruá | Jornalismo Investigativo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="ticker-bar">
+        <div class="ticker-content">
+            
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">𐃆</span>
+                Urtiga do Juruá
+            </a>
+            
+            <form id="form-pesquisa" style="display: flex; align-items: center;">
+                <input type="text" id="input-pesquisa" placeholder="[ Pesquisar notícia... ]" style="background-color: #111311; border: 1px solid var(--border-color); color: var(--text-primary); font-family: 'Courier Prime', monospace; padding: 10px 15px; width: 250px; font-size: 0.85rem; outline: none;">
+                <button type="submit" style="background-color: var(--accent-amber); color: var(--bg-main); border: none; padding: 11px 15px; font-family: 'Courier Prime', monospace; font-weight: bold; cursor: pointer; margin-left: -1px;">BUSCAR</button>
+            </form>
+        </div>
+    </header>
+
+    <section class="hero" id="hero-section"></section>
+
+    <div class="container">
+        <main>
+            <h2 class="section-title">Últimos Relatos</h2>
+            <div class="articles-grid"></div>
+            
+            <div id="paginacao" style="display: flex; justify-content: space-between; margin-top: 3rem; font-family: 'Courier Prime', monospace;">
+                <button id="btn-prev" class="btn-apoio" style="width: auto; padding: 10px 20px; display: none;">&larr; Mais Recentes</button>
+                <button id="btn-next" class="btn-apoio" style="width: auto; padding: 10px 20px; display: none; margin-left: auto;">Arquivos Antigos &rarr;</button>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            
+            <!-- 1. BLOCO DO EDITOR -->
+            <h2 class="section-title">JORNALISTA</h2>
+            <div id="area-perfil-editor" style="margin-bottom: 3.5rem;"></div>
+            
+            <!-- 2. BLOCO DE PATROCÍNIOS -->
+            <h2 class="section-title">Apoie a Verdade</h2>
+            <div id="area-patrocinadores"></div>
+
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 URTIGA DO JURUÁ - Jornalismo Investigativo.</p>
+        <p style="margin-top: 10px; color: #555; letter-spacing: 1px;">Redação: Cruzeiro do Sul, Acre.</p>
+    </footer>
+
+    <!-- SDK do Supabase (A ponte) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Suas Chaves e Lógica -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

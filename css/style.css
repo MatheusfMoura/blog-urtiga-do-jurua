@@ -1,0 +1,324 @@
+       /* Fontes: Playfair para Manchetes e Autoridade, Courier para detalhamento "investigativo" e Lora para leitura suave */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Lora:ital,wght@0,400;0,600;1,400&family=Courier+Prime:wght@400;700&display=swap');
+
+        :root {
+            --bg-main: #191c19; /* Verde mata muito profundo */
+            --bg-paper: #252925; /* Fundo dos cartões simulando papel escuro */
+            --text-primary: #e6e4d5; /* Cor de papel antigo para contraste de leitura */
+            --text-secondary: #9da095;
+            --accent-amber: #cfa858; /* Dourado escuro / Resina */
+            --accent-red: #9e3636; /* Vermelho urucum para urgência/alerta */
+            --border-color: #3b423b;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Lora', serif;
+            margin: 0;
+            /* Textura sutil de ruído/fundo usando gradiente radial */
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(59, 66, 59, 0.3), transparent 60%),
+                radial-gradient(circle at 85% 30%, rgba(158, 54, 54, 0.08), transparent 50%);
+        }
+
+        /* --- Ticker de Cotações Regionais --- */
+        .ticker-bar {
+            background-color: #0f110f;
+            border-bottom: 1px solid var(--border-color);
+            padding: 6px 0;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-amber);
+            text-transform: uppercase;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 35s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* --- Cabeçalho e Logo --- */
+        header {
+            background: linear-gradient(to bottom, #121412, #191c19);
+            border-bottom: 2px solid var(--accent-amber);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 2.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            color: var(--accent-red);
+            font-size: 2.2rem;
+            line-height: 1;
+            transform: rotate(15deg);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: color 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-amber);
+        }
+
+        /* --- Seção de Manchete Principal (Hero) --- */
+        .hero {
+            padding: 2.5rem 2rem 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .hero-tag {
+            background-color: var(--accent-red);
+            color: #fff;
+            font-family: 'Courier Prime', monospace;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.8rem;
+            line-height: 1.05;
+            margin: 0 0 1.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .hero-excerpt {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 850px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* --- Estrutura Principal --- */
+        .container {
+            max-width: 1200px;
+            margin: 1.5rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 3.5rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--accent-amber);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- Cartões de Artigos --- */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .article-card {
+            background-color: var(--bg-paper);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        /* Efeito de páginas empilhadas por trás do cartão */
+        .article-card::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--border-color);
+            z-index: -1;
+            background-color: #1c1f1c;
+        }
+
+        .article-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 5px 5px 0px rgba(207, 168, 88, 0.4);
+            border-color: var(--accent-amber);
+        }
+
+        .article-meta {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-red);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin: 0 0 1rem 0;
+            line-height: 1.25;
+        }
+
+        .article-title a {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .article-title a:hover {
+            color: var(--accent-amber);
+        }
+
+        .article-excerpt {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* --- Sidebar & Painéis de Monetização Locais --- */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .ad-panel {
+            background-color: #1e221e;
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .ad-panel::before {
+            content: 'ESPAÇO DO APOIADOR';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--bg-main);
+            padding: 0 10px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            letter-spacing: 1px;
+        }
+
+        .ad-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-amber);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .ad-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .btn-apoio {
+            background-color: transparent;
+            border: 1px solid var(--accent-amber);
+            color: var(--accent-amber);
+            font-family: 'Courier Prime', monospace;
+            padding: 12px 24px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-apoio:hover {
+            background-color: var(--accent-amber);
+            color: var(--bg-main);
+        }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px dashed var(--border-color);
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-top: 5rem;
+            font-family: 'Courier Prime', monospace;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            background-color: #141714;
+        }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 2.6rem;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lendo Dossiê | Urtiga do Juruá</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+
+        .leitura-container {
+            background-color: var(--bg-paper);
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+            box-shadow: 10px 10px 0px rgba(207, 168, 88, 0.1);
+        }
+
+        .leitura-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        #materia-categoria {
+            font-family: 'Courier Prime', monospace;
+            color: var(--accent-red);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        #materia-titulo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--text-primary);
+            line-height: 1.1;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .leitura-meta {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        #materia-conteudo {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #d1cfc0;
+            white-space: pre-wrap;
+        }
+        
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 3rem;
+            color: var(--accent-amber);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            border: 1px solid var(--accent-amber);
+            padding: 10px 20px;
+            transition: all 0.3s;
+        }
+        .btn-voltar:hover {
+            background-color: var(--accent-amber);
+            color: var(--bg-main);
+        }
+
+        @media (max-width: 768px) {
+            .leitura-container { padding: 1.5rem; }
+            #materia-titulo { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">𐃆</span>
+                Urtiga do Juruá
+            </a>
+        </div>
+    </header>
+
+    <!-- Usamos o container para fazer a divisão 2 Colunas (Texto) / 1 Coluna (Anúncios) -->
+    <div class="container">
+        
+        <!-- O CONTEÚDO DO ARTIGO -->
+        <main class="leitura-container">
+            <div class="leitura-header">
+                <span id="materia-categoria">Carregando...</span>
+                <h1 id="materia-titulo">Acessando os arquivos da redação...</h1>
+                <div class="leitura-meta">
+                    Publicado em: <span id="materia-data">--</span>
+                </div>
+            </div>
+
+            <img id="materia-imagem" src="" alt="Capa da investigação" style="width: 100%; max-height: 450px; object-fit: cover; border-bottom: 3px solid var(--accent-amber); margin-bottom: 2rem; display: none;">
+
+            <div id="materia-conteudo">
+                Aguarde um instante enquanto descriptografamos os dados do servidor.
+            </div>
+
+            <a href="index.html" class="btn-voltar">← Voltar para o inicio</a>
+        </main>
+
+        <!-- A BARRA LATERAL (Responsiva) -->
+        <aside class="sidebar">
+            <h2 class="section-title">Apoie a Verdade</h2>
+            <div id="area-patrocinadores"></div>
+        </aside>
+
+    </div>
+
+    <!-- Nossos Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/artigo.js"></script>
+
+</body>
+</html>

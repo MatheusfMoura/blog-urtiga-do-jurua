@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle | Urtiga do Juruá</title>
+    <!-- Fonte moderna e limpa para Dashboards -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0b0d10; /* Fundo geral escuro e neutro */
+            --bg-card: #16191f; /* Fundo dos cartões um pouco mais claro */
+            --border-color: #2b303b;
+            --text-main: #f3f4f6; /* Branco suave */
+            --text-muted: #9ca3af; /* Cinza para labels */
+            --accent: #cfa858; /* Seu dourado de marca */
+            --accent-hover: #e3be6d;
+            --input-bg: #0f1115;
+            --radius: 8px; /* Cantos arredondados modernos */
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Header do Dashboard --- */
+        .dashboard-header {
+            max-width: 1200px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon { color: var(--accent); font-size: 1.8rem; line-height: 1; }
+        
+        .user-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* --- Grid Principal (2 Colunas) --- */
+        .dashboard-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.8fr 1fr; /* Coluna esquerda maior */
+            gap: 1.5rem;
+        }
+
+        .admin-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header { margin-bottom: 1.5rem; }
+        .card-header h2 { font-size: 1.15rem; font-weight: 600; margin: 0 0 4px 0; color: var(--text-main); }
+        .card-header p { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+
+        /* --- Formulários Modernos --- */
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        input[type="text"], input[type="file"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(207, 168, 88, 0.15); /* Anel de foco suave */
+        }
+
+        textarea.main-content { height: 350px; resize: vertical; line-height: 1.5; }
+
+        .btn-submit {
+            background-color: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            padding: 14px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover { background-color: var(--accent-hover); }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-header">
+        <h1><span class="logo-icon">𐃆</span> Redação | Urtiga</h1>
+        <div class="user-badge">Modo Administrador</div>
+    </div>
+
+    <div class="dashboard-grid">
+        
+        <!-- Coluna Esquerda: Publicação de Matérias -->
+        <div class="admin-card">
+            <div class="card-header">
+                <h2>Nova Publicação</h2>
+                <p>Escreva e publique um novo dossiê investigativo.</p>
+            </div>
+
+            <form id="form-artigo">
+                <div class="form-group">
+                    <label>Título da Matéria</label>
+                    <input type="text" id="titulo" required placeholder="Ex: O novo escândalo nas licitações...">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Editoria (Categoria)</label>
+                        <input type="text" id="categoria" required placeholder="Ex: Política Local">
+                    </div>
+                    <div class="form-group">
+                        <label>Imagem de Capa</label>
+                        <input type="file" id="imagem_capa" accept="image/*" required style="padding: 9px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Resumo (Subtítulo)</label>
+                    <textarea id="resumo" rows="2" required placeholder="Duas linhas que chamem a atenção do leitor..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Texto Completo</label>
+                    <textarea id="conteudo" class="main-content" required placeholder="Digite a investigação completa aqui..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Publicar Dossiê</button>
+            </form>
+        </div>
+
+        <!-- Coluna Direita: Widgets (Ticker e Patrocinadores) -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            
+            <!-- Widget 1: Ticker -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2>Cotações do Topo</h2>
+                    <p>Atualize a barra que corre no site.</p>
+                </div>
+                <form id="form-ticker">
+                    <div class="form-group">
+                        <input type="text" id="texto_ticker" required placeholder="Ex: BOI: R$ 250 | SOJA: R$ 130...">
+                    </div>
+                    <button type="submit" class="btn-submit" id="btn-ticker" style="padding: 10px;">Atualizar Letreiro</button>
+                </form>
+            </div>
+
+            <!-- Widget: Perfil do Editor -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2>Perfil do editor</h2>
+                    <p>Atualize a foto e biografia da barra lateral.</p>
+                </div>
+                <form id="form-perfil">
+                    <div class="form-group">
+                        <label>Nome do Jornalista</label>
+                        <input type="text" id="perfil_nome" required placeholder="Ex: João Silva">
+                    </div>
+                    <div class="form-group">
+                        <label>Link da Rede Social</label>
+                        <input type="text" id="perfil_link" placeholder="Ex: https://facebook.com/...">
+                    </div>
+                    <div class="form-group">
+                        <label>Foto de Perfil (Quadrada)</label>
+                        <input type="file" id="perfil_imagem" accept="image/*" style="padding: 9px;">
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 5px;">Deixe em branco para manter a foto atual.</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Breve Biografia</label>
+                        <textarea id="perfil_bio" rows="3" required placeholder="Jornalista investigativo desde..." style="height: auto;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit" id="btn-perfil" style="padding: 10px;">Salvar Perfil</button>
+                </form>
+            </div>
+
+            <!-- Widget 2: Patrocinadores -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2>Novo Patrocinador</h2>
+                    <p>Adicione banners na barra lateral.</p>
+                </div>
+                <form id="form-patrocinador">
+                    <div class="form-group">
+                        <label>Nome da Empresa</label>
+                        <input type="text" id="patrocinador_nome" required placeholder="Ex: Tratores Silva">
+                    </div>
+                    <div class="form-group">
+                        <label>Link de Destino</label>
+                        <input type="text" id="patrocinador_link" required placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>Arte do Banner</label>
+                        <input type="file" id="patrocinador_imagem" accept="image/*" required style="padding: 9px;">
+                    </div>
+                    <button type="submit" class="btn-submit" id="btn-patrocinador" style="padding: 10px;">Cadastrar Anúncio</button>
+                </form>
+
+                <!-- Área da Lista -->
+                <div id="lista-patrocinadores" style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">Carregando anúncios ativos...</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
