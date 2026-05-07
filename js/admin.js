@@ -305,3 +305,46 @@ async function carregarDadosPerfil() {
         console.error("Erro ao carregar os dados no form do perfil.");
     }
 }
+
+// --- LÓGICA DE PRÉ-VISUALIZAÇÃO DA MATÉRIA ---
+document.getElementById('btn-preview').addEventListener('click', () => {
+    const titulo = document.getElementById('titulo').value;
+    const categoria = document.getElementById('categoria').value;
+    const conteudo = document.getElementById('conteudo').value;
+    const resumo = document.getElementById('resumo').value;
+    const arquivoInput = document.getElementById('imagem_capa');
+
+    if (!titulo || !categoria || !conteudo) {
+        alert('Preencha pelo menos o título, a categoria e o texto completo para pré-visualizar!');
+        return;
+    }
+
+    // Função que salva os dados temporariamente e abre a nova aba
+    const abrirPreview = (imagemBase64) => {
+        const previewData = {
+            titulo: titulo,
+            categoria: categoria,
+            conteudo: conteudo,
+            resumo: resumo,
+            imagem_url: imagemBase64,
+            created_at: new Date().toISOString()
+        };
+        
+        // Salva na memória rápida do navegador
+        localStorage.setItem('preview_urtiga', JSON.stringify(previewData));
+        
+        // Abre a página real do artigo passando um aviso de preview na URL
+        window.open('artigo.html?preview=true', '_blank');
+    };
+
+    // Lê a imagem do computador do cliente em formato texto (base64) sem fazer upload pro Supabase
+    if (arquivoInput.files && arquivoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            abrirPreview(e.target.result);
+        };
+        reader.readAsDataURL(arquivoInput.files[0]);
+    } else {
+        abrirPreview(null);
+    }
+});

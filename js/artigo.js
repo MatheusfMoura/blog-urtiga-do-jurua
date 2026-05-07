@@ -1,7 +1,21 @@
 async function carregarMateriaCompleta() {
     const urlParams = new URLSearchParams(window.location.search);
+    const isPreview = urlParams.get('preview');
     const artigoId = urlParams.get('id');
 
+    // 1. MODO PRÉ-VISUALIZAÇÃO (Lê da memória do navegador)
+    if (isPreview === 'true') {
+        const previewData = JSON.parse(localStorage.getItem('preview_urtiga'));
+        
+        if (previewData) {
+            renderizarDadosArtigo(previewData);
+        } else {
+            alert("Sessão de pré-visualização expirou ou está vazia.");
+        }
+        return; // Para a função aqui, não busca no banco!
+    }
+
+    // 2. MODO LEITOR NORMAL (Lê do Supabase)
     if (!artigoId) {
         window.location.href = 'index.html';
         return;
@@ -16,26 +30,31 @@ async function carregarMateriaCompleta() {
 
         if (error) throw error;
 
-        // 3. Formata a data
-        const dataFormatada = new Date(data.created_at).toLocaleDateString('pt-BR');
-
-        // 4. Injeta os dados na tela
-        document.getElementById('materia-categoria').innerText = data.categoria;
-        document.getElementById('materia-titulo').innerText = data.titulo;
-        document.getElementById('materia-data').innerText = dataFormatada;
-        document.getElementById('materia-conteudo').innerText = data.conteudo;
-
-        const imgElement = document.getElementById('materia-imagem');
-        if (data.imagem_url) {
-            imgElement.src = data.imagem_url;
-            imgElement.style.display = 'block';
-        }
+        renderizarDadosArtigo(data);
 
     } catch (error) {
         console.error("Erro ao carregar o artigo:", error.message);
         document.getElementById('materia-titulo').innerText = "Matéria não encontrada";
         document.getElementById('materia-conteudo').innerText = "O dossiê que você está procurando foi removido ou nunca existiu.";
         document.getElementById('materia-categoria').innerText = "ERRO 404";
+    }
+}
+
+// --- FUNÇÃO AUXILIAR PARA DESENHAR O HTML (Serve para o Preview e para o Banco) ---
+function renderizarDadosArtigo(data) {
+    const dataFormatada = new Date(data.created_at).toLocaleDateString('pt-BR');
+    
+    document.getElementById('materia-categoria').innerText = data.categoria;
+    document.getElementById('materia-titulo').innerText = data.titulo;
+    document.getElementById('materia-data').innerText = dataFormatada;
+    document.getElementById('materia-conteudo').innerText = data.conteudo;
+
+    const imgElement = document.getElementById('materia-imagem');
+    if (data.imagem_url) {
+        imgElement.src = data.imagem_url;
+        imgElement.style.display = 'block';
+    } else {
+        imgElement.style.display = 'none';
     }
 }
 
