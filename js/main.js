@@ -1,5 +1,6 @@
 async function carregarTicker() {
     try {
+        // 1. Busca o texto manual que o cliente digitou no Supabase (ex: Rio Juruá, Carne...)
         const { data, error } = await supabaseClient
             .from('ticker')
             .select('texto_cotacoes')
@@ -8,10 +9,28 @@ async function carregarTicker() {
 
         if (error) throw error;
 
+        // 2. Busca a cotação real do Dólar na API pública
+        let textoDolar = "";
+        try {
+            const respostaApi = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL');
+            const dadosApi = await respostaApi.json();
+            
+            // Pega o valor, formata para 2 casas decimais e troca ponto por vírgula
+            const valorDolar = parseFloat(dadosApi.USDBRL.bid).toFixed(2).replace('.', ',');
+            
+            // Monta o bloquinho do dólar com um separador
+            textoDolar = `COTAÇÃO DO DÓLAR: R$ ${valorDolar} | `;
+        } catch (apiError) {
+            console.error("Erro ao buscar o dólar na API externa:", apiError);
+            // Se a API externa falhar (o que é raro), o site não quebra, só omite o dólar.
+        }
+
+        // 3. Junta o Dólar automático com o texto manual do cliente e joga na tela
         if (data) {
             const tickerElement = document.querySelector('.ticker-content');
             if (tickerElement) {
-                tickerElement.innerHTML = data.texto_cotacoes;
+                // O Dólar aparece primeiro, seguido do texto do painel
+                tickerElement.innerHTML = textoDolar + data.texto_cotacoes;
             }
         }
     } catch (error) {
