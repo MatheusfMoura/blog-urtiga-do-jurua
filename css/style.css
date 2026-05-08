@@ -333,8 +333,9 @@
 
 .banner-master-container img {
     width: 100%;
-    max-height: 250px; /* Limita a altura para não engolir a tela */
-    object-fit: cover;
+    max-height: 300px;
+    height: auto;
+    object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
