@@ -130,14 +130,14 @@ async function carregarArtigos(termoBusca = '') {
                             
                             <!-- Título com efeito hover dourado -->
                             <h1 class="hero-title">
-                                <a href="artigo.html?id=${materiaPrincipal.id}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-amber)'" onmouseout="this.style.color='inherit'">
+                                <a href="artigo.php?id=${materiaPrincipal.id}" style="color: inherit; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-amber)'" onmouseout="this.style.color='inherit'">
                                     ${materiaPrincipal.titulo}
                                 </a>
                             </h1>
                             <p class="hero-excerpt">${materiaPrincipal.resumo}</p>
                             
                             <!-- Botão de "Leia Mais" para dar cara de matéria clicável -->
-                            <a href="artigo.html?id=${materiaPrincipal.id}" style="display: inline-block; margin-top: 15px; font-family: 'Courier Prime', monospace; color: var(--accent-amber); font-size: 0.9rem; text-decoration: none; font-weight: bold; border-bottom: 1px solid var(--accent-amber); padding-bottom: 3px; letter-spacing: 1px; transition: all 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#fff'" onmouseout="this.style.color='var(--accent-amber)'; this.style.borderColor='var(--accent-amber)'">
+                            <a href="artigo.php?id=${materiaPrincipal.id}" style="display: inline-block; margin-top: 15px; font-family: 'Courier Prime', monospace; color: var(--accent-amber); font-size: 0.9rem; text-decoration: none; font-weight: bold; border-bottom: 1px solid var(--accent-amber); padding-bottom: 3px; letter-spacing: 1px; transition: all 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#fff'" onmouseout="this.style.color='var(--accent-amber)'; this.style.borderColor='var(--accent-amber)'">
                                 LER O DOSSIÊ COMPLETO &rarr;
                             </a>
                         </div>
@@ -173,7 +173,7 @@ function desenharCartao(artigo, grid) {
     
     // Verifica se a matéria tem imagem cadastrada no banco. Se tiver, monta a foto.
     const imagemCapa = artigo.imagem_url 
-        ? `<a href="artigo.html?id=${artigo.id}" style="display: block; overflow: hidden;">
+        ? `<a href="artigo.php?id=${artigo.id}" style="display: block; overflow: hidden;">
              <img src="${artigo.imagem_url}" alt="Capa" style="width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid var(--border-color); display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
            </a>` 
         : '';
@@ -186,7 +186,7 @@ function desenharCartao(artigo, grid) {
                     <span>${artigo.categoria}</span>
                     <span>${dataFormatada}</span>
                 </div>
-                <h2 class="article-title"><a href="artigo.html?id=${artigo.id}">${artigo.titulo}</a></h2>
+                <h2 class="article-title"><a href="artigo.php?id=${artigo.id}">${artigo.titulo}</a></h2>
                 <p class="article-excerpt">${artigo.resumo}</p>
             </div>
         </article>

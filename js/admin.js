@@ -334,7 +334,7 @@ document.getElementById('btn-preview').addEventListener('click', () => {
         localStorage.setItem('preview_urtiga', JSON.stringify(previewData));
         
         // Abre a página real do artigo passando um aviso de preview na URL
-        window.open('artigo.html?preview=true', '_blank');
+        window.open('artigo.php?preview=true', '_blank');
     };
 
     // Lê a imagem do computador do cliente em formato texto (base64) sem fazer upload pro Supabase
