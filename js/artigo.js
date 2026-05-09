@@ -42,6 +42,19 @@ async function carregarMateriaCompleta() {
 
 // --- FUNÇÃO AUXILIAR PARA DESENHAR O HTML (Serve para o Preview e para o Banco) ---
 function renderizarDadosArtigo(data) {
+    // 1. TÍTULO E IMAGEM PARA O WHATSAPP / NAVEGADOR
+    const novoTitulo = `${data.titulo} | Rapidinhas com Urtiga do Juruá`;
+    document.title = novoTitulo;
+
+    const metaTitle = document.querySelector('meta[property="og:title"]');
+    if (metaTitle) metaTitle.setAttribute("content", novoTitulo);
+
+    const metaImage = document.getElementById('meta-image');
+    if (metaImage && data.imagem_url) {
+        metaImage.setAttribute("content", data.imagem_url);
+    }
+
+    // 2. DADOS NORMAIS DA MATÉRIA
     const dataFormatada = new Date(data.created_at).toLocaleDateString('pt-BR');
     
     document.getElementById('materia-categoria').innerText = data.categoria;
