@@ -51,6 +51,11 @@ if ($id_materia) {
     <meta property="og:url" content="<?php echo $url_og; ?>">
     <meta property="og:type" content="article">
 
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php echo $titulo_og; ?>">
+    <meta name="twitter:description" content="<?php echo $descricao_og; ?>">
+    <meta name="twitter:image" content="<?php echo $imagem_og; ?>">
+
     <link rel="stylesheet" href="css/style.css">
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NSMBEFKMNV"></script>

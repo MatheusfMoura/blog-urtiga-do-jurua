@@ -53,7 +53,7 @@ document.getElementById('form-artigo').addEventListener('submit', async (e) => {
         }
 
         // 3. Salva a matéria na tabela, agora incluindo o link da imagem!
-        const { error: dbError } = await supabaseClient
+        const { data: artigoInserido, error: dbError } = await supabaseClient
             .from('artigos')
             .insert([
                 {
@@ -63,9 +63,35 @@ document.getElementById('form-artigo').addEventListener('submit', async (e) => {
                     conteudo: conteudoValor,
                     imagem_url: imagemUrlParaSalvar
                 }
-            ]);
+            ])
+            .select(); // IMPORTANTE: Precisamos disso para pegar o ID gerado!
 
         if (dbError) throw dbError;
+
+        // --- INÍCIO DO AVISO AUTOMÁTICO AO FACEBOOK ---
+        if (artigoInserido && artigoInserido.length > 0) {
+            const idMateria = artigoInserido[0].id;
+            const urlMateria = `https://urtigadojurua.com/artigo.php?id=${idMateria}`;
+            
+            // ATENÇÃO: Substitua pelo Token que você vai gerar no Meta for Developers
+            const accessToken = '3143405609193238|72fc1bbae33fcc79daed1c0a5bf91621'; 
+            
+            try {
+                // Manda o robô do Facebook ler o link invisivelmente
+                fetch('https://graph.facebook.com/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        id: urlMateria,
+                        scrape: 'true',
+                        access_token: accessToken
+                    })
+                });
+            } catch (err) {
+                console.log('Aviso ao Facebook falhou em segundo plano.');
+            }
+        }
+        // --- FIM DO AVISO AUTOMÁTICO AO FACEBOOK ---
 
         alert('Matéria com capa publicada com sucesso!');
         document.getElementById('form-artigo').reset();
