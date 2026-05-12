@@ -343,3 +343,19 @@
     display: block; /* Tira aquele espaço vazio que fica embaixo do link */
     margin: 0 auto; /* Garante que a foto fique no centro */
 }
+
+/* Estilo dos links dentro da notícia */
+#materia-conteudo a {
+    color: var(--accent-amber);
+    text-decoration: underline;
+    font-weight: 700;
+    text-underline-offset: 3px;
+}
+
+#materia-conteudo a:hover {
+    color: #fff;
+}
+
+/* Ajuste para a barra de ferramentas do editor não sumir no fundo escuro */
+.ql-toolbar.ql-snow { background: #f3f4f6; border-radius: 6px 6px 0 0; }
+.ql-container.ql-snow { border-radius: 0 0 6px 6px; font-size: 16px; }

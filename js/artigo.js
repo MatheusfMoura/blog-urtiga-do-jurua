@@ -60,8 +60,8 @@ function renderizarDadosArtigo(data) {
     document.getElementById('materia-categoria').innerText = data.categoria;
     document.getElementById('materia-titulo').innerText = data.titulo;
     document.getElementById('materia-data').innerText = dataFormatada;
-    document.getElementById('materia-conteudo').innerText = data.conteudo;
-
+    // innerHTML permite que os links ocultos fiquem clicáveis para o leitor
+    document.getElementById('materia-conteudo').innerHTML = data.conteudo;
     const containerCapa = document.getElementById('container-capa');
     const imgElement = document.getElementById('materia-imagem');
     const legendaElement = document.getElementById('materia-imagem-legenda');

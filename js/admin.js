@@ -1,3 +1,16 @@
+// Inicializa o Editor Visual
+const quill = new Quill('#editor-quill', {
+    theme: 'snow',
+    placeholder: 'Escreva a investigação aqui e use o botão de link para referenciar fontes...',
+    modules: {
+        toolbar: [
+            ['bold', 'italic', 'underline'],
+            ['link', 'blockquote'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }]
+        ]
+    }
+});
+
 // --- INÍCIO DA TRAVA DE SEGURANÇA ---
 async function verificarSessao() {
     // Pergunta pro Supabase se tem alguém logado agora
@@ -22,7 +35,8 @@ document.getElementById('form-artigo').addEventListener('submit', async (e) => {
     const tituloValor = document.getElementById('titulo').value;
     const categoriaValor = document.getElementById('categoria').value;
     const resumoValor = document.getElementById('resumo').value;
-    const conteudoValor = document.getElementById('conteudo').value;
+    // Pega o conteúdo formatado (com os links escondidos) do editor
+    const conteudoValor = quill.root.innerHTML;
     const imagemDescricaoValor = document.getElementById('imagem_descricao').value;
     
     // 1. Captura o arquivo de imagem
