@@ -23,6 +23,7 @@ document.getElementById('form-artigo').addEventListener('submit', async (e) => {
     const categoriaValor = document.getElementById('categoria').value;
     const resumoValor = document.getElementById('resumo').value;
     const conteudoValor = document.getElementById('conteudo').value;
+    const imagemDescricaoValor = document.getElementById('imagem_descricao').value;
     
     // 1. Captura o arquivo de imagem
     const arquivoInput = document.getElementById('imagem_capa');
@@ -61,7 +62,8 @@ document.getElementById('form-artigo').addEventListener('submit', async (e) => {
                     categoria: categoriaValor,
                     resumo: resumoValor,
                     conteudo: conteudoValor,
-                    imagem_url: imagemUrlParaSalvar
+                    imagem_url: imagemUrlParaSalvar,
+                    imagem_descricao: imagemDescricaoValor
                 }
             ])
             .select(); // IMPORTANTE: Precisamos disso para pegar o ID gerado!
@@ -352,6 +354,7 @@ document.getElementById('btn-preview').addEventListener('click', () => {
             categoria: categoria,
             conteudo: conteudo,
             resumo: resumo,
+            imagem_descricao: document.getElementById('imagem_descricao').value,
             imagem_url: imagemBase64,
             created_at: new Date().toISOString()
         };

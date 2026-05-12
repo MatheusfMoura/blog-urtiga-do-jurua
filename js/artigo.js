@@ -62,12 +62,16 @@ function renderizarDadosArtigo(data) {
     document.getElementById('materia-data').innerText = dataFormatada;
     document.getElementById('materia-conteudo').innerText = data.conteudo;
 
+    const containerCapa = document.getElementById('container-capa');
     const imgElement = document.getElementById('materia-imagem');
+    const legendaElement = document.getElementById('materia-imagem-legenda');
+
     if (data.imagem_url) {
         imgElement.src = data.imagem_url;
-        imgElement.style.display = 'block';
+        legendaElement.innerText = data.imagem_descricao || ""; 
+        containerCapa.style.display = 'block';
     } else {
-        imgElement.style.display = 'none';
+        containerCapa.style.display = 'none';
     }
 }
 

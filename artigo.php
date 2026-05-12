@@ -10,7 +10,7 @@ $url_og = "https://urtigadojurua.com";
 
 if ($id_materia) {
     // 3. O servidor vai buscar a foto correta ao Supabase num milissegundo
-    $supabase_url = "https://uzplnvrjumguswkljoof.supabase.co/rest/v1/artigos?id=eq." . $id_materia . "&select=resumo,imagem_url";
+    $supabase_url = "https://uzplnvrjumguswkljoof.supabase.co/rest/v1/artigos?id=eq." . $id_materia . "&select=resumo,imagem_url,imagem_descricao";
     $supabase_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6cGxudnJqdW1ndXN3a2xqb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MjUzNzEsImV4cCI6MjA5MzUwMTM3MX0.CenoxOdBtraYevH8cQFdlsc-yuA2CG_MKGGDDYQwu_A";
 
     $ch = curl_init($supabase_url);
@@ -149,7 +149,10 @@ if ($id_materia) {
                 </div>
             </div>
 
-            <img id="materia-imagem" src="" alt="Capa da investigação" style="width: 100%; max-height: 450px; object-fit: cover; border-bottom: 3px solid var(--accent-amber); margin-bottom: 2rem; display: none;">
+            <div id="container-capa" style="display: none; margin-bottom: 2rem;">
+                <img id="materia-imagem" src="" alt="Capa da investigação" style="width: 100%; max-height: 450px; object-fit: cover; border-bottom: 3px solid var(--accent-amber);">
+                <p id="materia-imagem-legenda" style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px; font-style: italic; border-left: 2px solid var(--accent-amber); padding-left: 10px;"></p>
+            </div>
 
             <div id="materia-conteudo">
                 Aguarde um instante enquanto descriptografamos os dados do servidor.
