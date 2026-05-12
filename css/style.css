@@ -344,16 +344,20 @@
     margin: 0 auto; /* Garante que a foto fique no centro */
 }
 
-/* Estilo dos links dentro da notícia */
-#materia-conteudo a {
-    color: var(--accent-amber);
+/* Estilo dos links dentro da notícia - Otimizado para Leitura */
+#materia-conteudo a, 
+#materia-conteudo a:visited {
+    color: #8be9fd; /* Um ciano "neon" suave que não agride os olhos no escuro */
     text-decoration: underline;
-    font-weight: 700;
-    text-underline-offset: 3px;
+    text-underline-offset: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 #materia-conteudo a:hover {
     color: #fff;
+    text-decoration-color: var(--accent-amber); /* O sublinhado fica dourado no hover */
+    background-color: rgba(139, 233, 253, 0.1); /* Um leve brilho ao passar o mouse */
 }
 
 /* Ajuste para a barra de ferramentas do editor não sumir no fundo escuro */
