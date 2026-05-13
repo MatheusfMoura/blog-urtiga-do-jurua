@@ -165,6 +165,10 @@
     <div class="dashboard-header">
         <h1><span class="logo-icon">𐃆</span> Redação | Urtiga</h1>
         <div class="header-actions">
+            <button id="btn-abrir-modal-materias" class="btn-view-site" style="cursor: pointer;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Gerenciar Matérias
+            </button>
             <a href="index.html" target="_blank" class="btn-view-site">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 Acessar Portal
@@ -222,16 +226,15 @@
         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
             
             <!-- Widget 1: Ticker -->
-            <div class="admin-card">
-                <div class="card-header">
-                    <h2>Cotações do Topo</h2>
-                    <p>Atualize a barra que corre no site.</p>
+            <div class="admin-card" style="padding: 1.5rem;">
+                <div class="card-header" style="margin-bottom: 1rem; border-bottom: none; padding-bottom: 0;">
+                    <h2 style="font-size: 1.1rem;">Cotações do Topo</h2>
                 </div>
-                <form id="form-ticker">
-                    <div class="form-group">
-                        <input type="text" id="texto_ticker" required placeholder="Ex: BOI: R$ 250 | SOJA: R$ 130...">
+                <form id="form-ticker" style="display: flex; gap: 10px;">
+                    <div class="form-group" style="margin-bottom: 0; flex-grow: 1;">
+                        <input type="text" id="texto_ticker" required placeholder="Ex: BOI: R$ 250 | SOJA..." style="padding: 10px; font-size: 0.85rem;">
                     </div>
-                    <button type="submit" class="btn-submit" id="btn-ticker" style="padding: 10px;">Atualizar Letreiro</button>
+                    <button type="submit" class="btn-submit" id="btn-ticker" style="width: auto; padding: 10px 15px; margin-top: 0; font-size: 0.85rem; white-space: nowrap;">Atualizar</button>
                 </form>
             </div>
 
@@ -303,7 +306,18 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <div id="modal-materias" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); width: 90%; max-width: 800px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);">
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0; font-size: 1.25rem; color: var(--text-main);">Matérias Publicadas</h2>
+                <button id="btn-fechar-modal" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <div id="lista-materias-modal" style="padding: 1.5rem; overflow-y: auto; flex-grow: 1;">
+                <p style="color: var(--text-muted); text-align: center;">Carregando matérias...</p>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>

@@ -391,3 +391,80 @@ document.getElementById('btn-preview').addEventListener('click', () => {
         abrirPreview(null);
     }
 });
+
+// --- LÓGICA DO MODAL DE GERENCIAMENTO DE MATÉRIAS ---
+const modalMaterias = document.getElementById('modal-materias');
+const btnAbrirModal = document.getElementById('btn-abrir-modal-materias');
+const btnFecharModal = document.getElementById('btn-fechar-modal');
+const listaMateriasDiv = document.getElementById('lista-materias-modal');
+
+// Abre o modal e carrega a lista
+btnAbrirModal.addEventListener('click', () => {
+    modalMaterias.style.display = 'flex';
+    carregarMateriasModal();
+});
+
+// Fecha no "X"
+btnFecharModal.addEventListener('click', () => {
+    modalMaterias.style.display = 'none';
+});
+
+// Fecha clicando fora da caixa preta
+window.addEventListener('click', (event) => {
+    if (event.target == modalMaterias) {
+        modalMaterias.style.display = 'none';
+    }
+});
+
+async function carregarMateriasModal() {
+    listaMateriasDiv.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Carregando matérias...</p>';
+    
+    // Puxa as matérias do banco da mais nova para a mais velha
+    const { data, error } = await supabaseClient
+        .from('artigos')
+        .select('id, titulo, categoria, created_at')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        listaMateriasDiv.innerHTML = '<p style="color: #ef4444;">Erro ao carregar matérias.</p>';
+        return;
+    }
+
+    if (data.length === 0) {
+        listaMateriasDiv.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Nenhuma matéria publicada ainda.</p>';
+        return;
+    }
+
+    // Desenha as matérias com o botão de excluir
+    listaMateriasDiv.innerHTML = data.map(materia => {
+        const dataFormatada = new Date(materia.created_at).toLocaleDateString('pt-BR');
+        return `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 10px;">
+            <div style="flex-grow: 1; margin-right: 15px;">
+                <h4 style="margin: 0 0 4px 0; color: var(--text-main); font-size: 0.95rem;">${materia.titulo}</h4>
+                <span style="font-size: 0.75rem; color: var(--accent); font-family: 'Courier Prime', monospace;">${materia.categoria} | ${dataFormatada}</span>
+            </div>
+            <button onclick="excluirMateria('${materia.id}')" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 4px; padding: 8px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='#ef4444';">
+                Excluir
+            </button>
+        </div>
+        `;
+    }).join('');
+}
+
+// Lógica Real de Exclusão no Supabase
+window.excluirMateria = async (id) => {
+    if (!confirm("Atenção: Tem certeza que deseja excluir esta matéria? Essa ação não pode ser desfeita e a matéria sumirá do site!")) return;
+
+    const { error } = await supabaseClient
+        .from('artigos')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        alert("Erro ao excluir matéria: " + error.message);
+    } else {
+        alert("Matéria excluída com sucesso!");
+        carregarMateriasModal(); // Atualiza a lista na hora sem precisar recarregar a página
+    }
+};
