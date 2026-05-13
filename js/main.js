@@ -173,8 +173,8 @@ function desenharCartao(artigo, grid) {
     
     // Verifica se a matéria tem imagem cadastrada no banco. Se tiver, monta a foto.
     const imagemCapa = artigo.imagem_url 
-        ? `<a href="artigo.php?id=${artigo.id}" style="display: block; overflow: hidden;">
-             <img src="${artigo.imagem_url}" alt="Capa" style="width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid var(--border-color); display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        ? `<a href="artigo.php?id=${artigo.id}" style="display: block; overflow: hidden; background-color: #0b0d10;">
+             <img src="${artigo.imagem_url}" alt="Capa" style="width: 100%; height: auto; max-height: 280px; object-fit: contain; border-bottom: 1px solid var(--border-color); display: block; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
            </a>` 
         : '';
 

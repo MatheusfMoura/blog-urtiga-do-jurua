@@ -149,9 +149,9 @@ if ($id_materia) {
                 </div>
             </div>
 
-            <div id="container-capa" style="display: none; margin-bottom: 2rem;">
-                <img id="materia-imagem" src="" alt="Capa da investigação" style="width: 100%; max-height: 450px; object-fit: cover; border-bottom: 3px solid var(--accent-amber);">
-                <p id="materia-imagem-legenda" style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px; font-style: italic; border-left: 2px solid var(--accent-amber); padding-left: 10px;"></p>
+            <div id="container-capa" style="display: none; margin-bottom: 2rem; background-color: #0b0d10; text-align: center;">
+                <img id="materia-imagem" src="" alt="Capa da investigação" style="width: 100%; height: auto; max-height: 550px; object-fit: contain; border-bottom: 3px solid var(--accent-amber);">
+                <p id="materia-imagem-legenda" style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px; font-style: italic; border-left: 2px solid var(--accent-amber); padding-left: 10px; text-align: left;"></p>
             </div>
 
             <div id="materia-conteudo">
