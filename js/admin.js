@@ -352,12 +352,14 @@ async function carregarDadosPerfil() {
 document.getElementById('btn-preview').addEventListener('click', () => {
     const titulo = document.getElementById('titulo').value;
     const categoria = document.getElementById('categoria').value;
-    const conteudo = document.getElementById('conteudo').value;
+    // Pega o conteúdo direto do novo editor Quill, e não do campo invisível antigo
+    const conteudo = quill.root.innerHTML;
     const resumo = document.getElementById('resumo').value;
     const arquivoInput = document.getElementById('imagem_capa');
 
-    if (!titulo || !categoria || !conteudo) {
-        alert('Preencha pelo menos o título, a categoria e o texto completo para pré-visualizar!');
+    // O Quill sempre cria um <p><br></p> invisível mesmo quando está vazio, então validamos isso
+    if (!titulo || !categoria || !conteudo || conteudo === '<p><br></p>') {
+        alert('Preencha pelo menos o título, a categoria e o texto da investigação para pré-visualizar!');
         return;
     }
 
