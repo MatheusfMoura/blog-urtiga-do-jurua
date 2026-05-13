@@ -319,6 +319,7 @@ document.getElementById('form-perfil').addEventListener('submit', async (e) => {
 
         alert('Perfil do editor atualizado com sucesso!');
         arquivoInput.value = ''; // Limpa o campo de arquivo após subir
+        document.getElementById('modal-perfil').style.display = 'none'; // Esconde a janela sozinho
 
     } catch (error) {
         console.error("Erro ao atualizar perfil:", error.message);
@@ -409,8 +410,18 @@ btnFecharModal.addEventListener('click', () => {
     modalMaterias.style.display = 'none';
 });
 
+// --- LÓGICA DO MODAL DE PERFIL ---
+const modalPerfil = document.getElementById('modal-perfil');
+const btnAbrirModalPerfil = document.getElementById('btn-abrir-modal-perfil');
+const btnFecharModalPerfil = document.getElementById('btn-fechar-modal-perfil');
+
+btnAbrirModalPerfil.addEventListener('click', () => modalPerfil.style.display = 'flex');
+btnFecharModalPerfil.addEventListener('click', () => modalPerfil.style.display = 'none');
+
+// Clicar fora fecha qualquer um dos modais abertos
 window.addEventListener('click', (event) => {
     if (event.target == modalMaterias) modalMaterias.style.display = 'none';
+    if (event.target == modalPerfil) modalPerfil.style.display = 'none';
 });
 
 async function carregarMateriasModal() {
