@@ -370,49 +370,64 @@ async function carregarDadosPerfil() {
 }
 
 // --- LÓGICA DE PRÉ-VISUALIZAÇÃO DA MATÉRIA ---
-document.getElementById('btn-preview').addEventListener('click', () => {
+document.getElementById('btn-preview').addEventListener('click', async () => {
     const titulo = document.getElementById('titulo').value;
     const categoria = document.getElementById('categoria').value;
-    // Pega o conteúdo direto do novo editor Quill, e não do campo invisível antigo
     const conteudo = quill.root.innerHTML;
     const resumo = document.getElementById('resumo').value;
-    const arquivoInput = document.getElementById('imagem_capa');
 
-    // O Quill sempre cria um <p><br></p> invisível mesmo quando está vazio, então validamos isso
     if (!titulo || !categoria || !conteudo || conteudo === '<p><br></p>') {
         alert('Preencha pelo menos o título, a categoria e o texto da investigação para pré-visualizar!');
         return;
     }
 
-    // Função que salva os dados temporariamente e abre a nova aba
-    const abrirPreview = (imagemBase64) => {
-        const previewData = {
-            titulo: titulo,
-            categoria: categoria,
-            conteudo: conteudo,
-            resumo: resumo,
-            imagem_descricao: document.getElementById('imagem_descricao').value,
-            imagem_url: imagemBase64,
-            created_at: new Date().toISOString()
-        };
-        
-        // Salva na memória rápida do navegador
-        localStorage.setItem('preview_urtiga', JSON.stringify(previewData));
-        
-        // Abre a página real do artigo passando um aviso de preview na URL
-        window.open('artigo.php?preview=true', '_blank');
+    // Função rápida para ler a imagem do PC do usuário sem mandar pro servidor
+    const lerArquivoComoBase64 = (idInput) => {
+        return new Promise((resolve) => {
+            const arquivo = document.getElementById(idInput).files[0];
+            if (!arquivo) {
+                resolve(null);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(arquivo);
+        });
     };
 
-    // Lê a imagem do computador do cliente em formato texto (base64) sem fazer upload pro Supabase
-    if (arquivoInput.files && arquivoInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            abrirPreview(e.target.result);
-        };
-        reader.readAsDataURL(arquivoInput.files[0]);
-    } else {
-        abrirPreview(null);
+    // Lê todas as imagens do PC (Capa, Extra 1 e Extra 2)
+    const base64Capa = await lerArquivoComoBase64('imagem_capa');
+    const base64Extra1 = await lerArquivoComoBase64('imagem_extra_1');
+    const base64Extra2 = await lerArquivoComoBase64('imagem_extra_2');
+
+    let textoFinalPreview = conteudo;
+
+    // Faz a mágica da substituição das tags FOTO1 e FOTO2 no Preview
+    if (base64Extra1) {
+        const legenda1 = document.getElementById('legenda_extra_1').value;
+        const htmlFoto1 = `<div style="text-align: center; margin: 2.5rem 0;"><img src="${base64Extra1}" alt="Investigação" style="max-width: 100%; height: auto; border-radius: 4px; border-bottom: 2px solid var(--accent-amber);"><br><span style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--text-secondary); font-style: italic; display: inline-block; margin-top: 8px;">${legenda1}</span></div>`;
+        textoFinalPreview = textoFinalPreview.replace(/\[FOTO1\]/g, htmlFoto1);
     }
+
+    if (base64Extra2) {
+        const legenda2 = document.getElementById('legenda_extra_2').value;
+        const htmlFoto2 = `<div style="text-align: center; margin: 2.5rem 0;"><img src="${base64Extra2}" alt="Investigação" style="max-width: 100%; height: auto; border-radius: 4px; border-bottom: 2px solid var(--accent-amber);"><br><span style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--text-secondary); font-style: italic; display: inline-block; margin-top: 8px;">${legenda2}</span></div>`;
+        textoFinalPreview = textoFinalPreview.replace(/\[FOTO2\]/g, htmlFoto2);
+    }
+
+    const previewData = {
+        titulo: titulo,
+        categoria: categoria,
+        conteudo: textoFinalPreview,
+        resumo: resumo,
+        imagem_descricao: document.getElementById('imagem_descricao').value,
+        imagem_url: base64Capa,
+        created_at: new Date().toISOString()
+    };
+    
+    // Salva na memória rápida do navegador e abre a aba
+    localStorage.setItem('preview_urtiga', JSON.stringify(previewData));
+    window.open('artigo.php?preview=true', '_blank');
 });
 
 // --- LÓGICA DO MODAL DE GERENCIAMENTO DE MATÉRIAS (VERSÃO ÚNICA) ---
