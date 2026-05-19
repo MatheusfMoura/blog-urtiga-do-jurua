@@ -1,12 +1,21 @@
-// Inicializa o Editor Visual
+// Inicializa o Editor Visual (Turbinado)
 const quill = new Quill('#editor-quill', {
     theme: 'snow',
     placeholder: 'Escreva a investigação aqui e use o botão de link para referenciar fontes...',
     modules: {
         toolbar: [
-            ['bold', 'italic', 'underline'],
+            // Agora ele pode escolher o tamanho da fonte e cabeçalhos
+            [{ 'size': ['small', false, 'large', 'huge'] }],
+            [{ 'header': [2, 3, 4, false] }],
+            // Formatação de texto
+            ['bold', 'italic', 'underline', 'strike'],
+            // Cores
+            [{ 'color': [] }, { 'background': [] }],
+            // Listas, links e citações
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
             ['link', 'blockquote'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }]
+            // Limpar formatação
+            ['clean']
         ]
     }
 });
@@ -39,35 +48,46 @@ document.getElementById('form-artigo').addEventListener('submit', async (e) => {
     const conteudoValor = quill.root.innerHTML;
     const imagemDescricaoValor = document.getElementById('imagem_descricao').value;
     
-    // 1. Captura o arquivo de imagem
-    const arquivoInput = document.getElementById('imagem_capa');
-    const arquivoImagem = arquivoInput.files[0];
-    let imagemUrlParaSalvar = null;
+    // 1. Captura os arquivos de imagem (Capa e Extras)
+    const arquivoImagemCapa = document.getElementById('imagem_capa').files[0];
+    const arquivoImagemExtra1 = document.getElementById('imagem_extra_1').files[0];
+    const arquivoImagemExtra2 = document.getElementById('imagem_extra_2').files[0];
+    
+    let imagemUrlCapa = null;
+    let urlExtra1 = null;
+    let urlExtra2 = null;
+
+    // Função interna rápida para subir qualquer imagem
+    const fazerUpload = async (arquivo) => {
+        if (!arquivo) return null;
+        const nomeUnico = Date.now() + '-' + arquivo.name.replace(/\s+/g, '-');
+        const { error } = await supabaseClient.storage.from('imagens').upload(nomeUnico, arquivo);
+        if (error) throw error;
+        return supabaseClient.storage.from('imagens').getPublicUrl(nomeUnico).data.publicUrl;
+    };
 
     try {
-        // 2. Lógica de Upload da Imagem
-        if (arquivoImagem) {
-            // Cria um nome único para a imagem não sobrescrever outra
-            const nomeUnico = Date.now() + '-' + arquivoImagem.name.replace(/\s+/g, '-');
+        // 2. Sobe as imagens que o jornalista escolheu
+        imagemUrlCapa = await fazerUpload(arquivoImagemCapa);
+        urlExtra1 = await fazerUpload(arquivoImagemExtra1);
+        urlExtra2 = await fazerUpload(arquivoImagemExtra2);
 
-            // Manda para o bucket 'imagens'
-            const { data: uploadData, error: uploadError } = await supabaseClient
-                .storage
-                .from('imagens')
-                .upload(nomeUnico, arquivoImagem);
-
-            if (uploadError) throw uploadError;
-
-            // Pega o link público da imagem que acabou de subir
-            const { data: publicUrlData } = supabaseClient
-                .storage
-                .from('imagens')
-                .getPublicUrl(nomeUnico);
-
-            imagemUrlParaSalvar = publicUrlData.publicUrl;
+        // 3. Processa o texto para injetar as FOTOS EXTRAS onde ele digitou [FOTO1] e [FOTO2]
+        let textoFinal = conteudoValor;
+        
+        if (urlExtra1) {
+            const legenda1 = document.getElementById('legenda_extra_1').value;
+            const htmlFoto1 = `<div style="text-align: center; margin: 2.5rem 0;"><img src="${urlExtra1}" alt="Investigação" style="max-width: 100%; height: auto; border-radius: 4px; border-bottom: 2px solid var(--accent-amber);"><br><span style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--text-secondary); font-style: italic; display: inline-block; margin-top: 8px;">${legenda1}</span></div>`;
+            textoFinal = textoFinal.replace(/\[FOTO1\]/g, htmlFoto1);
         }
 
-        // 3. Salva a matéria na tabela, agora incluindo o link da imagem!
+        if (urlExtra2) {
+            const legenda2 = document.getElementById('legenda_extra_2').value;
+            const htmlFoto2 = `<div style="text-align: center; margin: 2.5rem 0;"><img src="${urlExtra2}" alt="Investigação" style="max-width: 100%; height: auto; border-radius: 4px; border-bottom: 2px solid var(--accent-amber);"><br><span style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--text-secondary); font-style: italic; display: inline-block; margin-top: 8px;">${legenda2}</span></div>`;
+            textoFinal = textoFinal.replace(/\[FOTO2\]/g, htmlFoto2);
+        }
+
+        // 4. Salva a matéria na tabela, com o texto já montado e a imagem de capa!
         const { data: artigoInserido, error: dbError } = await supabaseClient
             .from('artigos')
             .insert([
@@ -75,8 +95,8 @@ document.getElementById('form-artigo').addEventListener('submit', async (e) => {
                     titulo: tituloValor,
                     categoria: categoriaValor,
                     resumo: resumoValor,
-                    conteudo: conteudoValor,
-                    imagem_url: imagemUrlParaSalvar,
+                    conteudo: textoFinal,
+                    imagem_url: imagemUrlCapa,
                     imagem_descricao: imagemDescricaoValor
                 }
             ])
